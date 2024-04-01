@@ -3,20 +3,22 @@ import './App.css';
 let intervalId: number;
 let firstStop = true;
 
+let lotterySlots = [
+    {value: 'Lotéria', image: 'https://www.codeproject.com/KB/GDI-plus/ImageProcessing2/grayscale.jpg'},
+    {value: '3', image: 'https://media.gcflearnfree.org/ctassets/topics/246/share_flower_fullsize.jpg'},
+    {value: '4', image: 'https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg'},
+    {value: '5', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIT_X7uxU2yh1i7bMRYCjsmmUUEesmr3g0yEEEKxk-rg&s'},
+    {value: '6', image: 'https://th.bing.com/th/id/OIG.MxQxUggA0RKmKdTjwAqw'},
+    {value: '7a', image: 'https://www.codeproject.com/KB/GDI-plus/ImageProcessing2/grayscale.jpg'},
+    {value: '8a', image: 'https://i.natgeofe.com/n/9a66de8b-f698-4193-9ba6-3483b4d3bcf4/flying-fish_16x9.jpg'}
+]
+
 function App() {
 
     const [isSpinning, setIsSpinning] = useState(false);
     const [currentSlotIndex, setCurrentSlotIndex] = useState(0);
 
-    // change above array to [{value: '3', image: 'https://media.gcflearnfree.org/ctassets/topics/246/share_flower_fullsize.jpg'}, ...  format
-    const lotterySlots = [
-        {value: '3', image: 'https://media.gcflearnfree.org/ctassets/topics/246/share_flower_fullsize.jpg'},
-        {value: '4', image: 'https://letsenhance.io/static/8f5e523ee6b2479e26ecc91b9c25261e/1015f/MainAfter.jpg'},
-        {value: '5', image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTIT_X7uxU2yh1i7bMRYCjsmmUUEesmr3g0yEEEKxk-rg&s'},
-        {value: '6', image: 'https://th.bing.com/th/id/OIG.MxQxUggA0RKmKdTjwAqw'},
-        {value: '7a', image: 'https://www.codeproject.com/KB/GDI-plus/ImageProcessing2/grayscale.jpg'},
-        {value: '8a', image: 'https://media.gcflearnfree.org/ctassets/topics/246/share_flower_fullsize.jpg'}
-        ]
+
 
     useEffect(() => {
 
@@ -29,9 +31,12 @@ function App() {
         }
 
         return () => clearInterval(intervalId);
-    }, [isSpinning]);
+    }, [isSpinning, lotterySlots.length]);
 
     const handleStart = () => {
+        console.log(currentSlotIndex)
+        lotterySlots.splice(currentSlotIndex, 1);
+        console.log(lotterySlots);
         setIsSpinning(true);
     };
 
@@ -49,7 +54,7 @@ function App() {
       <div className="App">
 
           <div>
-              <button onClick={handleStart} disabled={isSpinning}>
+              <button onClick={handleStart} disabled={isSpinning || lotterySlots.length === 1}>
                   Start
               </button>
               <button onClick={handleStop} disabled={!isSpinning}>
