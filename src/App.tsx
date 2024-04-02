@@ -25,7 +25,7 @@ function App() {
         if (isSpinning) {
             intervalId = window.setInterval(()=>{
                 setCurrentSlotIndex((prevIndex) => (prevIndex + 1) % lotterySlots.length);
-            }, 100); // Adjust the interval as needed
+            }, 100);
         } else {
             clearInterval(intervalId);
         }
@@ -34,20 +34,40 @@ function App() {
     }, [isSpinning, lotterySlots.length]);
 
     const handleStart = () => {
-        console.log(currentSlotIndex)
         lotterySlots.splice(currentSlotIndex, 1);
-        console.log(lotterySlots);
+        clearInterval(intervalId);
+
         setIsSpinning(true);
+
     };
 
     const handleStop = () => {
         setIsSpinning(false);
         if(firstStop) {
             firstStop = false;
-            clearInterval(intervalId);
+
             setCurrentSlotIndex(2);
         }
+        clearInterval(intervalId);
     };
+
+
+    const getValue = () => {
+        if(lotterySlots[currentSlotIndex]?.value){
+
+        return lotterySlots[currentSlotIndex].value
+        } else{
+            return lotterySlots[0].value
+        }
+    }
+
+    const getImage = () => {
+        if(lotterySlots[currentSlotIndex]?.image){
+            return lotterySlots[currentSlotIndex].image
+        }else{
+            return lotterySlots[0].image
+        }
+    }
 
 
   return (
@@ -61,11 +81,10 @@ function App() {
                   Stop
               </button>
           </div>
-          <div style={{backgroundColor: "#ffd",
-              fontSize: "8em"}}>
-              {lotterySlots[currentSlotIndex].value}
+          <div style={{backgroundColor: "#ffd", fontSize: "8em"}} onClick={()=>!isSpinning ? handleStart() : handleStop()}>
+              {getValue()}
               <br/>
-              <img src={lotterySlots[currentSlotIndex].image} alt="logo"
+              <img src={getImage()} alt="logo"
                    style={{ maxWidth: '400px', maxHeight: '400px' }} />
           </div>
 
